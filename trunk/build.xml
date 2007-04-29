@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="help" name="Korat">
+
+    <property environment="env" />
+    <property name="BUILD_DIR" value="build" />
+    <property name="DISTRIB_DIR" value="dist" />
+    <property name="TEST_REPORTS_DIR" value="test-reports" />
+
+    <path id="Korat.classpath">
+        <pathelement location="${BUILD_DIR}" />
+        <pathelement location="lib/alloy4viz.jar" />
+        <pathelement location="lib/commons-cli-1.0.jar" />
+        <pathelement location="lib/javassist.jar" />
+        <pathelement location="lib/junit.jar" />
+    </path>
+
+    <target name="help">
+        <echo>
+        Korat build options: 
+                build             -- builds Korat from source
+                createJar         -- creates korat.jar from source
+                test              -- runs some tests for Korat
+        	    javadoc           -- builds JavaDoc for Korat API
+                build-java1.4     -- builds Korat version compatible with Java 1.4 VM
+                createJar-java1.4 -- creates korat.jar compatible with Java 1.4 VM
+        </echo>
+    </target>
+
+    <target name="clean">
+        <delete dir="${BUILD_DIR}" />
+        <delete dir="${DISTRIB_DIR}" />
+        <delete dir="${TEST_REPORTS_DIR}" />
+    </target>
+
+    <target name="init">
+        <mkdir dir="${BUILD_DIR}" />
+        <copy includeemptydirs="false" todir="${BUILD_DIR}">
+            <fileset dir="src" excludes="**/*.java" />
+        </copy>
+        <copy includeemptydirs="false" todir="${BUILD_DIR}">
+            <fileset dir="examples" excludes="**/*.java" />
+        </copy>
+        <copy includeemptydirs="false" todir="${BUILD_DIR}">
+            <fileset dir="tests" excludes="**/*.java" />
+        </copy>
+    </target>
+
+    <target name="build" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}" />
+        <javac debug="true" debuglevel="source,lines,vars" destdir="${BUILD_DIR}" source="1.5" target="1.5">
+            <src path="src" />
+            <src path="examples" />
+            <src path="tests" />
+            <classpath refid="Korat.classpath" />
+        </javac>
+    </target>
+
+    <target name="createJar">
+        <antcall target="clean" />
+        <antcall target="build" />
+        <mkdir dir="${DISTRIB_DIR}" />
+        <jar destfile="${DISTRIB_DIR}/korat.jar" basedir="${BUILD_DIR}">
+            <manifest>
+                <attribute name="Class-Path" value="alloy4viz.jar commons-cli-1.0.jar javassist.jar junit.jar" />
+                <attribute name="Main-Class" value="korat.Korat" />
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- In order to run target tests, junit.jar must be present
+         in $ANT_HOME/lib directory -->
+    <target name="test" depends="build">
+        <javac debug="true" debuglevel="source,lines,vars" destdir="${BUILD_DIR}" source="1.5" target="1.5">
+            <src path="tests" />
+            <classpath refid="Korat.classpath" />
+        </javac>
+        <mkdir dir="${TEST_REPORTS_DIR}" />
+        <junit printsummary="true" fork="true" haltonfailure="false">
+            <classpath refid="Korat.classpath" />
+            <formatter type="plain" />
+            <batchtest fork="yes" todir="${TEST_REPORTS_DIR}">
+                <fileset dir="tests/">
+                    <include name="korat/exploration/*ExplorationTest.java" />
+                    <exclude name="korat/exploration/BaseExplorationTest.java" />
+                    <exclude name="korat/exploration/ExplorationAllTests.java" />
+                </fileset>
+            </batchtest> 
+        </junit>
+    </target>
+
+    <target name="javadoc">
+        <javadoc access="private" author="true" classpath="lib/alloy4viz.jar;lib/commons-cli-1.0.jar;lib/javassist.jar;lib/junit.jar" destdir="web/api" doctitle="Korat API" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.5" sourcepath="src;tests;examples" splitindex="true" use="true" version="true">
+            <fileset dir="src">
+                <include name="korat/**/*.java" />
+            </fileset>
+            <link href="http://jakarta.apache.org/commons/cli/api-release/" />
+            <link href="http://www.csg.is.titech.ac.jp/~chiba/javassist/html/" />
+            <link href="http://junit.sourceforge.net/javadoc/" />
+            <link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+        </javadoc>
+    </target>
+
+    <!-- Version for JVM 1.4 was for running on GFS. -->
+    <target name="build-java1.4" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}" />
+        <javac debug="false" destdir="${BUILD_DIR}" source="1.5" target="jsr14">
+            <src path="src" />
+            <src path="examples" />
+            <classpath refid="Korat.classpath" />
+        </javac>
+    </target>    
+
+    <target name="createJar-java1.4">
+        <antcall target="clean" />
+        <antcall target="build-java1.4" />
+        <mkdir dir="${DISTRIB_DIR}" />
+        <jar destfile="${DISTRIB_DIR}/korat.jar" basedir="${BUILD_DIR}">
+            <manifest>
+                <attribute name="Class-Path" value="alloy4viz.jar commons-cli-1.0.jar javassist.jar junit.jar" />
+                <attribute name="Main-Class" value="korat.Korat" />
+            </manifest>
+        </jar>
+    </target>
+
+</project>
