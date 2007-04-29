@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry path="src" kind="src"/>
+    <classpathentry path="examples" kind="src"/>
+    <classpathentry path="tests" kind="src"/>
+    
+    <classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+    <classpathentry sourcepath="lib/alloy4viz.jar" path="lib/alloy4viz.jar" kind="lib"/>
+    <classpathentry sourcepath="lib/cli-1.0-src.zip" path="lib/commons-cli-1.0.jar" kind="lib">
+        <attributes>
+            <attribute name="javadoc_location" value="http://jakarta.apache.org/commons/cli/api-release/"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry path="lib/javassist.jar" kind="lib">
+        <attributes>
+            <attribute name="javadoc_location" value="http://www.csg.is.titech.ac.jp/~chiba/javassist/html/"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry path="lib/junit.jar" kind="lib">
+        <attributes>
+            <attribute name="javadoc_location" value="http://junit.sourceforge.net/javadoc/"/>
+        </attributes>
+    </classpathentry>
+    <classpathentry path="build" kind="output"/>
+</classpath>
