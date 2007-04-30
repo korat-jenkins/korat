@@ -20,7 +20,7 @@
                 build             -- builds Korat from source
                 createJar         -- creates korat.jar from source
                 test              -- runs some tests for Korat
-        	    javadoc           -- builds JavaDoc for Korat API
+                javadoc           -- builds JavaDoc for Korat API
                 build-java1.4     -- builds Korat version compatible with Java 1.4 VM
                 createJar-java1.4 -- creates korat.jar compatible with Java 1.4 VM
         </echo>
