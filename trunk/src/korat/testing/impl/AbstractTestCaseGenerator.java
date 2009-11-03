@@ -57,8 +57,8 @@ public abstract class AbstractTestCaseGenerator {
     }
 
     protected void notifyTestFinished(long numOfExplored, long numOfGenerated) {
-        if (interrupted)
-            return;
+//        if (interrupted)
+//            return;
         for (ITestCaseListener client : clients)
             client.notifyTestFinished(numOfExplored, numOfGenerated);
         for (ITestCaseListener special : specialClients)
