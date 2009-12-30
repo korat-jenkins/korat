@@ -86,9 +86,12 @@ public class Finitization implements IFinitization {
                 // second chance - add the package of the root class to
                 // the full class name
                 String myClassName = rootClass.getName();
-                String pack = myClassName.substring(0,
-                        myClassName.lastIndexOf("."));
-                String fullClassName = pack + "." + className;
+                int lastDotPos = myClassName.lastIndexOf(".");
+                String pack = "";
+                // class does not belong to the default package
+                if (lastDotPos != -1)
+                    pack = myClassName.substring(0, lastDotPos) + ".";
+                String fullClassName = pack + className;
                 try {
                     cls = Class.forName(fullClassName, false,
                             Finitization.getClassLoader());
