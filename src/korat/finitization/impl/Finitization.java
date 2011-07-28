@@ -383,7 +383,7 @@ public class Finitization implements IFinitization {
             boolean includeNull) {
         IObjSet ret = createObjSet(classDomain.getClassOfObjects());
         ret.addClassDomain(classDomain);
-        ret.setNullAllowed(true);
+        ret.setNullAllowed(includeNull);
         return ret;
     }
 
